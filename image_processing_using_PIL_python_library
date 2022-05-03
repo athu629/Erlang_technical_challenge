@@ -1,0 +1,23 @@
+# Rotate a pbm file by 45, 90 or 180 degrees.
+from PIL import Image
+
+# User to input pbm filename. They must include the file extension.
+print("Hi there, please type in the full name of the file (including the extension .pbm)")
+welcome_text = "Please type your filename here:"
+
+# Parse an NotFound error if the the file isnt typed in correctly
+while True:
+    try:
+        filename = str(input(welcome_text))
+        img = Image.open(filename)
+        break
+    except FileNotFoundError:
+        print("Oops! there was no such file in the directory")
+
+# Ask if the user ho many degrees would they like to rotate the pbm file; 45, 90 or 180
+rotation = int(input("Would you like to rotate the image by 0, 45, 90 or 180 degrees (input number): "))
+
+while rotation not in [0, 45, 90, 180]:
+    rotation = int(input("Please try again! Type in 0, 45, 90 or 180:"))
+
+img.rotate(rotation).show()
