@@ -14,7 +14,7 @@ while True:
     except FileNotFoundError:
         print("Oops! there was no such file in the directory")
 
-# Ask if the user ho many degrees would they like to rotate the pbm file; 45, 90 or 180
+# Ask if the user how many degrees would they like to rotate the pbm file; 0, 45, 90 or 180
 rotation = int(input("Would you like to rotate the image by 0, 45, 90 or 180 degrees (input number): "))
 
 while rotation not in [0, 45, 90, 180]:
