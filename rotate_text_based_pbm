@@ -1,0 +1,98 @@
+##############################
+"""
+Code to rotate a users text based pbm by 45, 90 or 180.
+"""
+##############################
+
+from pprint import pprint
+
+# User to input pbm filename. They must include the file extension.
+print("Hi there, please type in the full name of the file (including the extension .pbm)")
+welcome_text = "Please type your filename here:"
+
+# Parse a NotFound error if the the file isnt typed in correctly
+while True:
+    try:
+        filename = str(input(welcome_text))
+        img = open(filename, "r")
+        break
+    except FileNotFoundError:
+        print("Oops! there was no such file in the directory")
+
+# Ask the user how many degrees would they like to rotate the pbm file: 45, 90 or 180
+rotation = int(input("Would you like to rotate the image by 45, 90 or 180 degrees clockwise (input number): "))
+while rotation not in [45, 90, 180]:
+    rotation = int(input("Please try again! Type in 45, 90 or 180:"))
+
+# Define rotation functions
+# Rotate by 45 degrees clockwise function
+def rotate_by_45(x, y, arr):
+    counter = 0
+    new_array = []
+    while counter < ((x + y -1)):
+        new_line = [" " * abs(y - counter - 1)]
+        trailing = abs(x - counter - 1)
+
+        for i in range(x):
+            for j in range(y):
+                if i + j == counter:
+                    new_line.append(arr[j][i])
+
+        new_line.append(" "*trailing)
+        new_array.append(new_line)
+        counter += 1
+    return new_array
+
+# rotate by 90 degrees clockwise function
+def rotate_by_90(x, y, arr):
+    new_array = []
+    for i in range(x):
+        line_array = []
+        for j in range(y-1, 0, -1):
+            line_array.append(arr[j][i])
+        new_array.append(line_array)
+    return new_array
+
+# rotate by 180 degrees clockwise function
+def rotate_by_180(x, y, arr):
+    new_arr = []
+    for i in reversed(arr):
+        line_of_arr = []
+        for j in reversed(i):
+            line_of_arr.append(j)
+        new_arr.append(line_of_arr)
+    return new_arr
+
+# process the request
+with open("image_processing.pbm", "r") as f:
+    pbm_type = f.readline()
+    message = f.readline()
+    dimensions = f.readline().split()
+    width = int(dimensions[0])
+    height = int(dimensions[1])
+
+    lines = f.readlines()
+    original_arr = []
+    for line in lines:
+        t = list(map(int, line.strip().split()))
+        original_arr.append(t)
+
+    if rotation == 45:
+        new_array = rotate_by_45(width, height, original_arr)
+    elif rotation == 90:
+        new_array = rotate_by_90(width, height, original_arr)
+    elif rotation == 180:
+        new_array = rotate_by_180(width, height, original_arr)
+
+# print the request ad compare to original pbm file array.
+print("This is the original pbm array")
+pprint(original_arr)
+
+print("This is your new pbm array, rotated by", rotation, "degrees clockwise")
+if rotation != 45:
+    pprint(new_array)
+else:
+    for line in new_array:
+        for item in line:
+            print(item, end="")
+        print("\n")
